@@ -1,0 +1,31 @@
+DECOMPOSE_PROCESSES+=( 'init' 'explore_tinc')
+
+_decompose-process-init(){
+  PROJECT_TINC_NETWORK_NAME
+  if [ -z "$PROJECT_TINC_NETWORK_NAME" ]; then
+    echo "Please specify PROJECT_TINC_NETWORK_NAME in elements file."
+    exit 1
+  fi
+  if [ -z "$1" ]; then
+    echo "Please hostname as the first parameter."
+    exit 2
+  fi
+  docker-compose run --rm -u hostuser tinc -n $PROJECT_TINC_NETWORK_NAME init $1
+}
+_decompose-process-init_help() {
+  echo "  Run tinc init"
+}
+
+_decompose-process-explore_tinc() {
+  if [ "$1" == "root" ]; then
+    docker-compose exec tinc bash
+  else
+    docker-compose exec --user=hostuser tinc bash
+  fi
+}
+_decompose-process-explore_tinc_help() {
+  echo "  Explore running tinc instance"
+  echo "  Use 'root' as the first parameter to explore as root"
+}
+
+# vim:syntax=sh tabstop=2 shiftwidth=2 expandtab
