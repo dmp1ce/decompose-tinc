@@ -1,0 +1,5 @@
+.gitmodules
+.git
+docker-compose.yml
+.decompose/environment
+Dockerfile
