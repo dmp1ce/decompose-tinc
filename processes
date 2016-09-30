@@ -5,7 +5,6 @@ DECOMPOSE_PROCESSES+=( 'init' 'explore_tinc'
   "${DECOMPOSE_COMMON_PROCESSES[@]}" )
 
 _decompose-process-init(){
-  PROJECT_TINC_NETWORK_NAME
   if [ -z "$PROJECT_TINC_NETWORK_NAME" ]; then
     echo "Please specify PROJECT_TINC_NETWORK_NAME in elements file."
     exit 1
