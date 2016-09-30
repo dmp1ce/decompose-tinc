@@ -1,3 +1,5 @@
 #PROJECT_TINC_NETWORK_NAME="mynetwork"
+# Port to open for Tinc
+#PROJECT_TINC_PORT=""
 
 # vim:syntax=sh tabstop=2 shiftwidth=2 expandtab

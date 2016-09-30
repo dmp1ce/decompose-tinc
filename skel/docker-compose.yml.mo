@@ -14,3 +14,7 @@ services:
     network_mode: "host"
     environment:
       - TERM=dumb
+{{#PROJECT_TINC_PORT}}
+    ports:
+      - "{{PROJECT_TINC_PORT}}:{{PROJECT_TINC_PORT}}"
+{{/PROJECT_TINC_PORT}}
