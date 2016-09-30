@@ -13,4 +13,4 @@ services:
       - NET_ADMIN
     network_mode: "host"
     environment:
-      - TERM: dumb
+      - TERM=dumb
