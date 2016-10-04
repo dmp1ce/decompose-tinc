@@ -1,8 +1,51 @@
 # Include common processes
 source $(_decompose-project-root)/.decompose/environment/lib/common/processes
+source $(_decompose-project-root)/.decompose/environment/lib/docker/processes
+source $(_decompose-project-root)/.decompose/environment/lib/backup/processes
 
-DECOMPOSE_PROCESSES+=( 'init' 'explore_tinc'
-  "${DECOMPOSE_COMMON_PROCESSES[@]}" )
+DECOMPOSE_PROCESSES+=( 'init' 'explore_tinc' 'cron' 'build' 'up'
+  "${DECOMPOSE_COMMON_PROCESSES[@]}" "${DECOMPOSE_BACKUP_PROCESSES[@]}"
+  "${DECOMPOSE_DOCKER_PROCESSES[@]}" )
+
+_decompose-process-cron() {
+  echo "Running cron ..."
+
+  return_code=0
+  decompose build
+  return_code=$((return_code + $?))
+  decompose up
+  return_code=$((return_code + $?))
+  decompose remove-dangling-docker-images
+  return_code=$((return_code + $?))
+  decompose backup_config
+  return_code=$((return_code + $?))
+
+  return $return_code
+}
+_decompose-process-cron_help() {
+  echo "  Runs actions that should be scheduled through host cron"
+}
+
+_decompose-process-build() {
+  local return_code=0
+
+  _decompose-process-common-build
+  return_code=$((return_code + $?))
+  _decompose-process-docker-build
+  return_code=$((return_code + $?))
+
+  return $return_code
+}
+_decompose-process-build_help() {
+  echo "  Build the project"
+}
+
+_decompose-process-up() {
+  docker-compose up -d
+}
+_decompose-process-up_help() {
+  echo "  Start project locally"
+}
 
 _decompose-process-init(){
   if [ -z "$PROJECT_TINC_NETWORK_NAME" ]; then

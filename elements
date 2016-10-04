@@ -1,3 +1,5 @@
+source $(_decompose-project-root)/.decompose/environment/lib/backup/elements
+
 # Set local user/group id
 PROJECT_HOST_USERID="$(id -u)"
 PROJECT_HOST_GROUPID="$(id -g)"
